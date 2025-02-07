@@ -18,14 +18,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 # Set the working directory to /var/www/html (Apache's default directory)
 WORKDIR /var/www/html
 
-# Copy all project files into the container
+# Copy the project files into the container
 COPY . .
 
-# Set appropriate permissions for storage and bootstrap/cache directories
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Create required directories if they do not exist
+RUN mkdir -p storage bootstrap/cache
 
-# Expose port 80 so the container is accessible on that port
+# Set appropriate permissions for storage and bootstrap/cache directories
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Expose port 80 for the web server
 EXPOSE 80
 
-# Start Apache in the foreground when the container runs
+# Start Apache in the foreground (this command runs when the container starts)
 CMD ["apache2-foreground"]
