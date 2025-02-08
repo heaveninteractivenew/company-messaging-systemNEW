@@ -21,7 +21,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
-# Copy all project files into the container
+# Copy composer files first (to leverage Docker cache)
+COPY composer.json composer.lock ./
+
+# Run Composer install to generate the vendor folder and autoload.php
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy the rest of the project files into the container
 COPY . .
 
 # Create required directories if they don't exist
@@ -30,10 +36,7 @@ RUN mkdir -p storage bootstrap/cache
 # Set appropriate permissions for storage and bootstrap/cache directories
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# **Do not change DocumentRoot**; we want Apache to serve from /var/www/html.
-# (If needed, you can explicitly set DocumentRoot in Apache config, but the default is /var/www/html.)
-
-# Expose port 80 for the web server
+# Do NOT change DocumentRoot because, with Option 2, index.php and .htaccess are in the repository root
 EXPOSE 80
 
 # Start Apache in the foreground
