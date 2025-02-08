@@ -21,19 +21,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
-# Copy only the composer files first to leverage Docker caching
-COPY composer.json composer.lock ./
+# Copy only composer.json (since composer.lock is not available)
+COPY composer.json ./
 
-# Install Composer dependencies (this creates the vendor folder)
-# Increase memory limit if needed by using -d memory_limit=-1
+# Run Composer install (this will generate a vendor folder, but without a lock file, versions may vary)
 RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # Copy the rest of your project files into the container
 COPY . .
 
 # Create required directories if they don't exist and fix permissions
-RUN mkdir -p storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN mkdir -p storage bootstrap/cache && chown -R www-data:www-data storage bootstrap/cache
 
 # Expose port 80 for Apache
 EXPOSE 80
