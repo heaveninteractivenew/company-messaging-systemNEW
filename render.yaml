@@ -8,13 +8,23 @@ services:
       php artisan optimize
     startCommand: php artisan serve --host=0.0.0.0 --port=10000
     envVars:
-      APP_ENV: "production"
-      APP_KEY: "base64:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
-      APP_DEBUG: "false"
-      APP_URL: "https://company-messaging-demo.onrender.com"
-      DB_CONNECTION: "mysql"
-      DB_HOST: "db.company-messaging.onrender.com"
-      DB_PORT: "3306"
-      DB_DATABASE: "company_messaging"
-      DB_USERNAME: "company_user"
-      DB_PASSWORD: "secure_password"
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: base64:abcdef123456789abcdef123456789abcdef123456789abcdef123456789
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: "https://company-messaging-demo.onrender.com"
+      - key: DB_CONNECTION
+        value: "mysql"
+      - key: DB_HOST
+        value: "db.company-messaging.onrender.com"
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: "company_messaging"
+      - key: DB_USERNAME
+        value: "company_user"
+      - key: DB_PASSWORD
+        value: "secure_password"
