@@ -16,12 +16,6 @@
         "laravel/framework": "^9.0",
         "laravel/tinker": "^2.7"
     },
-    "require-dev": {
-        "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5"
-    },
     "autoload": {
         "psr-4": {
             "App\\": "app/"
@@ -30,11 +24,6 @@
             "database/seeds",
             "database/factories"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
     },
     "scripts": {
         "post-root-package-install": [
@@ -52,6 +41,9 @@
         "laravel": {
             "dont-discover": []
         }
+    },
+    "replace": {
+        "illuminate/support": "*"
     },
     "config": {
         "preferred-install": "dist",
