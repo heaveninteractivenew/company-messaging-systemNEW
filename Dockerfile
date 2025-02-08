@@ -12,28 +12,28 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mod_rewrite for Laravel routing
 RUN a2enmod rewrite
 
-# (Optional) Set ServerName to suppress Apache warnings
+# (Optional) Set ServerName to suppress warnings
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Install Composer from the official Composer image
+# Install Composer by copying it from the official Composer image
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
-# Copy only composer.json (since composer.lock is not present)
-COPY composer.json ./
-
-# Run Composer install (this creates the vendor folder)
-RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
-# Copy the rest of your project files into the container
+# Copy all project files into the container
 COPY . .
 
-# Create required directories if they don't exist and set permissions
-RUN mkdir -p storage bootstrap/cache && chown -R www-data:www-data storage bootstrap/cache
+# Create required directories if they don't exist
+RUN mkdir -p storage bootstrap/cache
 
-# Expose port 80 for Apache
+# Set appropriate permissions for storage and bootstrap/cache directories
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# **Do not change DocumentRoot**; we want Apache to serve from /var/www/html.
+# (If needed, you can explicitly set DocumentRoot in Apache config, but the default is /var/www/html.)
+
+# Expose port 80 for the web server
 EXPOSE 80
 
 # Start Apache in the foreground
