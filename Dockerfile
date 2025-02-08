@@ -30,8 +30,8 @@ RUN mkdir -p storage bootstrap/cache
 # Set appropriate permissions for storage and bootstrap/cache directories
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Change Apache DocumentRoot to the 'public' folder
-RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# **Do not change DocumentRoot**; we want Apache to serve from /var/www/html.
+# (If needed, you can explicitly set DocumentRoot in Apache config, but the default is /var/www/html.)
 
 # Expose port 80 for the web server
 EXPOSE 80
