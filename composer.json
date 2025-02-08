@@ -1,5 +1,6 @@
 {
     "name": "heaveninteractivenew/company-messaging-system",
+    "version": "1.0.0",
     "description": "Dual messaging system with company branding and personal chats for the WAVE Platform.",
     "keywords": [
         "laravel",
