@@ -45,7 +45,6 @@
             "dont-discover": []
         }
     },
-    "replace": {
         "illuminate/support": "*"
     },
     "config": {
