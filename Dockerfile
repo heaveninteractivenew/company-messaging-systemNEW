@@ -30,8 +30,17 @@ RUN mkdir -p storage bootstrap/cache
 # Set appropriate permissions for storage and bootstrap/cache directories
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# **Do not change DocumentRoot**; we want Apache to serve from /var/www/html.
-# (If needed, you can explicitly set DocumentRoot in Apache config, but the default is /var/www/html.)
+# -----------------------------------------------------------------
+# Change Made #1: Update Apache DocumentRoot to the public folder.
+# This ensures Apache serves public/index.php.
+RUN sed -ri 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# -----------------------------------------------------------------
+
+# -----------------------------------------------------------------
+# Change Made #2: Run Composer install to generate the vendor folder.
+# This step installs dependencies and creates vendor/autoload.php.
+RUN composer install --no-dev --optimize-autoloader
+# -----------------------------------------------------------------
 
 # Expose port 80 for the web server
 EXPOSE 80
