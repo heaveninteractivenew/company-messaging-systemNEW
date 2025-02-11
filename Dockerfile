@@ -18,6 +18,9 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # Install Composer by copying it from the official Composer image
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
+# Set an environment variable to allow Composer to run as root
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
@@ -31,14 +34,12 @@ RUN mkdir -p storage bootstrap/cache
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # -----------------------------------------------------------------
-# Change Made #1: Update Apache DocumentRoot to the public folder.
-# This ensures Apache serves public/index.php.
+# Update Apache configuration to use the public folder as DocumentRoot.
 RUN sed -ri 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 # -----------------------------------------------------------------
 
 # -----------------------------------------------------------------
-# Change Made #2: Run Composer install to generate the vendor folder.
-# This step installs dependencies and creates vendor/autoload.php.
+# Run Composer install to generate the vendor folder.
 RUN composer install --no-dev --optimize-autoloader
 # -----------------------------------------------------------------
 
