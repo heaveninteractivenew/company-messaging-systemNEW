@@ -14,5 +14,5 @@ This project is a dual messaging system offering company-branded messaging and p
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/heaveninteractivenew/company-messaging-system.git
+   git clone https://github.com/heaveninteractivenew/company-messaging-systemNEW.git
    cd company-messaging-system
