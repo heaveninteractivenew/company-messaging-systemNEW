@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: company-messaging
+    runtime: docker
+    buildCommand: |
+      composer install --no-dev
+      php artisan migrate --force
+      php artisan optimize
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: base64:abcdef123456789abcdef123456789abcdef123456789abcdef123456789
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: "https://company-messaging-demo.onrender.com"
+      - key: DB_CONNECTION
+        value: "mysql"
+      - key: DB_HOST
+        value: "db.company-messaging.onrender.com"
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: "company_messaging"
+      - key: DB_USERNAME
+        value: "company_user"
+      - key: DB_PASSWORD
+        value: "secure_password"
